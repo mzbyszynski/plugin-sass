@@ -6,8 +6,6 @@ import os from 'os';
 
 const cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
-let urlBase;
-
 const escape = source => {
   return source
     .replace(/(["\\])/g, '\\$1')
@@ -43,7 +41,7 @@ const parseUnescape = uri => {
 sass.importer((request, done) => {
   // Currently only supporting scss imports due to
   // https://github.com/sass/libsass/issues/1695
-  const importUrl = url.resolve(urlBase, `${request.current}.scss`);
+  const importUrl = url.resolve(request.previous, `${request.current}.scss`);
   const partialUrl = importUrl.replace(/\/([^/]*)$/, '/_$1');
   const readImportPath = parseUnescape(importUrl);
   const readPartialPath = parseUnescape(partialUrl);
@@ -63,10 +61,11 @@ export default (loads, compileOpts) => {
 
   const compilePromise = load => {
     return new Promise((resolve, reject) => {
-      urlBase = load.address;
+      const urlBase = load.address;
       const options = {
         style: sass.style.compressed,
         indentedSyntax: urlBase.endsWith('.sass'),
+        inputPath: urlBase,
       };
       sass.compile(load.source, options, result => {
         if (result.status === 0) {

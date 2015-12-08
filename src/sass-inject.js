@@ -2,8 +2,6 @@ import reqwest from 'reqwest';
 import url from 'url';
 import './modernizr';
 
-let urlBase;
-
 const importSass = new Promise((resolve, reject) => {
   if (Modernizr.webworkers) {
     System.import('sass.js/dist/sass', __moduleName).then(Sass => {
@@ -23,7 +21,7 @@ importSass.then(sass => {
     const { current } = request;
     // Currently only supporting scss imports due to
     // https://github.com/sass/libsass/issues/1695
-    const importUrl = url.resolve(urlBase, `${current}.scss`);
+    const importUrl = url.resolve(request.previous, `${current}.scss`);
     const partialUrl = importUrl.replace(/\/([^/]*)$/, '/_$1');
     let content;
     reqwest(partialUrl)
@@ -61,15 +59,15 @@ const compile = scss => {
 };
 
 export default load => {
-  urlBase = load.address;
-  const indentedSyntax = urlBase.endsWith('.sass');
+  const inputPath = load.address;
+  const indentedSyntax = inputPath.endsWith('.sass');
   // load initial scss file
-  return reqwest(urlBase)
+  return reqwest(inputPath)
     // In Cordova Apps the response is the raw XMLHttpRequest
     .then(resp => {
       return {
         content: (resp.responseText ? resp.responseText : resp),
-        options: { indentedSyntax },
+        options: { indentedSyntax, inputPath },
       };
     })
     .then(compile);
