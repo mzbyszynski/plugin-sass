@@ -19,6 +19,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.25",
     "core-js": "npm:core-js@1.2.0",
     "fs": "github:jspm/nodelibs-fs@0.1.2",
+    "os": "github:jspm/nodelibs-os@0.1.0",
     "querystring": "github:jspm/nodelibs-querystring@0.1.0",
     "reqwest": "github:ded/reqwest@2.0.5",
     "sass.js": "npm:sass.js@0.9.4",
@@ -38,6 +39,9 @@ System.config({
     },
     "github:jspm/nodelibs-events@0.1.1": {
       "events": "npm:events@1.0.2"
+    },
+    "github:jspm/nodelibs-os@0.1.0": {
+      "os-browserify": "npm:os-browserify@0.1.2"
     },
     "github:jspm/nodelibs-path@0.1.0": {
       "path-browserify": "npm:path-browserify@0.0.0"
@@ -215,6 +219,9 @@ System.config({
     "npm:miller-rabin@2.0.1": {
       "bn.js": "npm:bn.js@2.2.0",
       "brorand": "npm:brorand@1.0.5"
+    },
+    "npm:os-browserify@0.1.2": {
+      "os": "github:jspm/nodelibs-os@0.1.0"
     },
     "npm:parse-asn1@3.0.2": {
       "asn1.js": "npm:asn1.js@2.2.1",

@@ -2,6 +2,7 @@ import fs from 'fs';
 import querystring from 'querystring';
 import sass from 'sass.js';
 import url from 'url';
+import os from 'os';
 
 const cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
@@ -33,8 +34,9 @@ const loadFile = path => {
 };
 
 const parseUnescape = uri => {
+  const isWin = /^win/.test(os.platform());
   // Node doesn't understand Windows' local file urls
-  return (uri.match(/^file:\/\/\//)) ? uri.replace(/^file:\/\/\//, '') : querystring.unescape(url.parse(uri).path);
+  return (isWin && uri.match(/^file:\/\/\//)) ? uri.replace(/^file:\/\/\//, '') : querystring.unescape(url.parse(uri).path);
 };
 
 // intercept file loading requests (@import directive) from libsass
@@ -50,7 +52,8 @@ sass.importer((request, done) => {
     .then(data => content = data)
     .catch(() => loadFile(readImportPath))
     .then(data => content = data)
-    .then(() => done({ content }));
+    .then(() => done({ content }))
+    .catch(err => done(err));
 });
 
 export default (loads, compileOpts) => {
