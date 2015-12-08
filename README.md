@@ -46,6 +46,13 @@ Now you can test runtime compilation
 $ gulp test:runtime
 ```
 
+runtime compilation with nested imports
+
+```sh
+$ gulp test:nestedRuntime
+```
+
+
 bundling
 
 ```sh

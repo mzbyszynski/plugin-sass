@@ -8,6 +8,7 @@ html
     script(src='config.js')
     script(type='text/javascript').
       System.import('styles/test.scss!')
+        .then(() => System.import('submodule/submodule'))
         .then(() => System.import('styles/test_sass.sass!scss'))
         .then(() => System.import('styles/test_other.scss!'))
         .then(() => {
@@ -17,3 +18,4 @@ html
     h1 I should become blue and background should show a SASS logo on a white background
     h2 Loading...
     p I SHOULD BE ALL LOWERCASE UNDERLINED AND CENTERED
+    p.big I should be Big

@@ -4,15 +4,13 @@ html
     title Test
     meta(charset='utf-8')
     meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
-    script(src='system.js')
+    script(src='jspm_packages/system.js')
     script(src='config.js')
-    script(src='bundle.js')
     script(type='text/javascript').
-      System.import('test/bundleme')
+      System.import('styles/test.scss!')
+        .then(() => System.import('bundleme'))
         .then(() => {
-            document.addEventListener('DOMContentLoaded', (event) => {
-                document.body.innerHTML += '<h2>Loading done</h2>';
-            });
+          document.body.innerHTML += '<h2>Loading done</h2>';
         });
   body
     h1 I should become blue and background should show a SASS logo on a white background

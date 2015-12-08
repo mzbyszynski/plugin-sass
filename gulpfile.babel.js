@@ -85,6 +85,16 @@ gulp.task('test:runtime', ['jade', 'modernizr'], () => {
   gulp.watch('src/**.js').on('change', browserSync.reload);
 });
 
+gulp.task('test:nestedRuntime', ['jade', 'modernizr'], () => {
+  browserSync.init({
+    server: {
+      index: 'nested-runtime-test.html',
+      baseDir: ['.tmp', 'src', 'test'],
+    },
+  });
+  gulp.watch('src/**.js').on('change', browserSync.reload);
+});
+
 gulp.task('test:bundle', ['jade', 'bundle'], () => {
   browserSync.init({
     server: {
