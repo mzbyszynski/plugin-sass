@@ -46,10 +46,17 @@ sass.importer((request, done) => {
   const readImportPath = parseUnescape(importUrl);
   const readPartialPath = parseUnescape(partialUrl);
   let content;
-  loadFile(readPartialPath)
-    .then(data => content = data)
-    .catch(() => loadFile(readImportPath))
-    .then(data => content = data)
+  const loader = new Promise((resolve, reject) => {
+    loadFile(readPartialPath)
+      .then(data => resolve(data))
+      .catch(() => {
+        loadFile(readImportPath)
+          .then(data => resolve(data))
+          .catch(err => reject(err));
+      });
+  });
+
+  loader.then(data => content = data)
     .then(() => done({ content }))
     .catch(err => done(err));
 });

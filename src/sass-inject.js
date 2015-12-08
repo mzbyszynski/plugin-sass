@@ -28,14 +28,14 @@ importSass.then(sass => {
       .then(resp => {
         // In Cordova Apps the response is the raw XMLHttpRequest
         content = resp.responseText ? resp.responseText : resp;
-        return content;
+        done({ content });
       })
-      .catch(() => reqwest(importUrl))
-      .then(resp => {
-        content = resp.responseText ? resp.responseText : resp;
-        return content;
-      })
-      .then(() => done({ content }));
+      .catch(() => reqwest(importUrl)
+        .then(resp => {
+          content = resp.responseText ? resp.responseText : resp;
+          done({ content });
+        })
+        .catch(err => done(err)));
   });
 });
 
